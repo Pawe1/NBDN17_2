@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TrainingPrep.collections;
 using Machine.Specifications;
 using Machine.Specifications.AutoMocking.Rhino;
+using TrainingPrep.specs.MovieLibrarySpecs;
 
 
 /* The following set of Contexts (TestFixture) are in place to specify the functionality that you need to complete for the MovieLibrary class.
@@ -114,4 +115,28 @@ namespace TrainingPrep.specs
                 subject.all_movies().CountAll().ShouldEqual(1);
         }
     }
+    [Subject(typeof(MovieLibrary))]
+    public class when_trying_to_change_the_set_of_movies_returned_by_the_movie_library_to_a_mutable_type :
+        movie_library_concern
+    {
+        static Movie first_movie;
+        static Movie second_movie;
+
+        Establish context = () =>
+        {
+            first_movie = new Movie();
+            second_movie = new Movie();
+            movie_collection.add_all(first_movie, second_movie);
+        };
+
+        Because of = () =>
+            exception_thrown_by_the_subject =
+                Catch.Exception(() => { var x = (IList<Movie>) subject.all_movies(); });
+
+        It should_get_an_invalid_cast_exception = () =>
+            exception_thrown_by_the_subject.ShouldBeOfExactType<InvalidCastException>();
+
+        static Exception exception_thrown_by_the_subject;
+    }
+
 }
