@@ -131,12 +131,12 @@ namespace TrainingPrep.specs
 
         Because of = () =>
             exception_thrown_by_the_subject =
-                Catch.Exception(() => { var x = (IList<Movie>) subject.all_movies(); });
+                Catch.Exception(() => { var x = (IList<Movie>)subject.all_movies(); });
 
         It should_get_an_invalid_cast_exception = () =>
             exception_thrown_by_the_subject.ShouldBeOfExactType<InvalidCastException>();
 
         static Exception exception_thrown_by_the_subject;
     }
-
+ 
 }
