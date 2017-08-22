@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace TrainingPrep.collections
 {
@@ -19,7 +20,8 @@ namespace TrainingPrep.collections
 
         public void add(Movie movie)
         {
-            throw new NotImplementedException();
+            if (!movies.Contains(movie)) 
+                movies.Add(movie);
         }
     }
 }
