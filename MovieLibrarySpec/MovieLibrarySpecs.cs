@@ -138,5 +138,112 @@ namespace TrainingPrep.specs
 
         static Exception exception_thrown_by_the_subject;
     }
- 
+    [Subject(typeof(MovieLibrary))]
+    public class when_searching_for_movies : concern_for_searching_and_sorting
+    {
+        It should_be_able_to_find_all_movies_published_by_pixar = () =>
+        {
+            var results = subject.all_movies_published_by_pixar();
+
+            results.ShouldContainOnly(cars, a_bugs_life);
+        };
+
+    }
+
+    [Subject(typeof(MovieLibrary))]
+    public class when_sorting_movies : concern_for_searching_and_sorting
+    {
+        It should_be_able_to_sort_all_movies_by_title_descending = () =>
+        {
+            var results = subject.sort_all_movies_by_title_descending();
+
+            results.ShouldContainOnlyInOrder(theres_something_about_mary, the_ring, shrek,
+                pirates_of_the_carribean, indiana_jones_and_the_temple_of_doom,
+                cars, a_bugs_life);
+        };
+
+    }
+
+    public abstract class concern_for_searching_and_sorting : movie_library_concern
+    {
+        protected static Movie a_bugs_life;
+        protected static Movie cars;
+        protected static Movie indiana_jones_and_the_temple_of_doom;
+        protected static Movie pirates_of_the_carribean;
+        protected static Movie shrek;
+        protected static Movie the_ring;
+        protected static Movie theres_something_about_mary;
+
+        Establish context = () => { populate_with_default_movie_set(movie_collection); };
+
+        static void populate_with_default_movie_set(IList<Movie> movieList)
+        {
+            indiana_jones_and_the_temple_of_doom = new Movie
+            {
+                title = "Indiana Jones And The Temple Of Doom",
+                date_published = new DateTime(1982, 1, 1),
+                genre = Genre.action,
+                production_studio = ProductionStudio.Universal,
+                rating = 10
+            };
+            cars = new Movie
+            {
+                title = "Cars",
+                date_published = new DateTime(2004, 1, 1),
+                genre = Genre.kids,
+                production_studio = ProductionStudio.Pixar,
+                rating = 10
+            };
+
+            the_ring = new Movie
+            {
+                title = "The Ring",
+                date_published = new DateTime(2005, 1, 1),
+                genre = Genre.horror,
+                production_studio = ProductionStudio.MGM,
+                rating = 7
+            };
+            shrek = new Movie
+            {
+                title = "Shrek",
+                date_published = new DateTime(2006, 5, 10),
+                genre = Genre.kids,
+                production_studio = ProductionStudio.Dreamworks,
+                rating = 10
+            };
+            a_bugs_life = new Movie
+            {
+                title = "A Bugs Life",
+                date_published = new DateTime(2000, 6, 20),
+                genre = Genre.kids,
+                production_studio = ProductionStudio.Pixar,
+                rating = 10
+            };
+            theres_something_about_mary = new Movie
+            {
+                title = "There's Something About Mary",
+                date_published = new DateTime(2007, 1, 1),
+                genre = Genre.comedy,
+                production_studio = ProductionStudio.MGM,
+                rating = 5
+            };
+            pirates_of_the_carribean = new Movie
+            {
+                title = "Pirates of the Carribean",
+                date_published = new DateTime(2003, 1, 1),
+                genre = Genre.action,
+                production_studio = ProductionStudio.Disney,
+                rating = 10
+            };
+
+            movieList.Add(cars);
+            movieList.Add(indiana_jones_and_the_temple_of_doom);
+            movieList.Add(pirates_of_the_carribean);
+            movieList.Add(a_bugs_life);
+            movieList.Add(shrek);
+            movieList.Add(the_ring);
+            movieList.Add(theres_something_about_mary);
+        }
+    }
+
 }
