@@ -39,6 +39,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="Genre.cs" />
     <Compile Include="Movie.cs" />
     <Compile Include="MovieLibrary.cs" />
