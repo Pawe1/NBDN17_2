@@ -24,35 +24,23 @@ namespace TrainingPrep.collections
             if (!movies.Contains(movie))
                 movies.Add(movie);
         }
-
-        private IEnumerable<Movie> GetMoviesWithCondition(Predicate<Movie> predicate)
-        {
-            foreach (var movie in movies)
-            {
-                if (predicate(movie))
-                {
-                    yield return movie;
-                }
-            }
-        }
+        
 
         public IEnumerable<Movie> all_movies_published_by_pixar()
         {
-            return GetMoviesWithCondition(movie => movie.production_studio.Equals(ProductionStudio.Pixar));
-            //foreach (var movie in movies)
-            //{
-            //    if (movie.production_studio.Equals(ProductionStudio.Pixar))
-            //    {
-            //        yield return movie;
-            //    }
-            //}
+            return AllMoviesThatSatisfy(movie => movie.production_studio.Equals(ProductionStudio.Pixar));
         }
 
         public IEnumerable<Movie> sort_all_movies_by_title_descending()
         {
+            return GetMoviesSortedBy((movie1, movie2) => -(movie1.title.CompareTo(movie2.title)));
+        }
+
+        private IEnumerable<Movie> GetMoviesSortedBy(Comparison<Movie> comparison)
+        {
             List<Movie> result = new List<Movie>(movies);
 
-            result.Sort((movie1, movie2) => -(movie1.title.CompareTo(movie2.title)));
+            result.Sort(comparison);
 
             return result;
         }
@@ -60,21 +48,20 @@ namespace TrainingPrep.collections
 
         public IEnumerable<Movie> all_movies_published_by_pixar_or_disney()
         {
-            foreach (var movie in movies)
-            {
-                if (movie.production_studio.Equals(ProductionStudio.Pixar) ||
-                    movie.production_studio.Equals(ProductionStudio.Disney))
-                {
-                    yield return movie;
-                }
-            }
+            return AllMoviesThatSatisfy(movie => movie.production_studio.Equals(ProductionStudio.Pixar) ||
+                                                 movie.production_studio.Equals(ProductionStudio.Disney));
         }
 
         public IEnumerable<Movie> all_movies_not_published_by_pixar()
         {
+            return AllMoviesThatSatisfy(movie => !movie.production_studio.Equals(ProductionStudio.Pixar));
+        }
+
+        private IEnumerable<Movie> AllMoviesThatSatisfy(Predicate<Movie> condition)
+        {
             foreach (var movie in movies)
             {
-                if (!movie.production_studio.Equals(ProductionStudio.Pixar))
+                if (condition(movie))
                 {
                     yield return movie;
                 }
@@ -83,73 +70,39 @@ namespace TrainingPrep.collections
 
         public IEnumerable<Movie> all_movies_published_after(int year)
         {
-            foreach (var movie in movies)
-            {
-                if (movie.date_published.Year > year)
-                {
-                    yield return movie;
-                }
-            }
+            return AllMoviesThatSatisfy(movie => movie.date_published.Year > year);
         }
 
         public IEnumerable<Movie> all_movies_published_between_years(int fromYear, int toYear)
         {
-            foreach (var movie in movies)
-            {
-                if (movie.date_published.Year >= fromYear && movie.date_published.Year <= toYear)
-                {
-                    yield return movie;
-                }
-            }
+            return AllMoviesThatSatisfy(movie => movie.date_published.Year >= fromYear && movie.date_published.Year <= toYear);
         }
 
         public IEnumerable<Movie> all_kid_movies()
         {
-            foreach (var movie in movies)
-            {
-                if (movie.genre.Equals(Genre.kids))
-                {
-                    yield return movie;
-                }
-            }
+            return AllMoviesThatSatisfy(movie => movie.genre.Equals(Genre.kids));
         }
 
         public IEnumerable<Movie> all_action_movies()
         {
-            foreach (var movie in movies)
-            {
-                if (movie.genre.Equals(Genre.action))
-                {
-                    yield return movie;
-                }
-            }
+            return AllMoviesThatSatisfy(movie => (movie.genre.Equals(Genre.action)));
+                
         }
 
         public IEnumerable<Movie> sort_all_movies_by_title_ascending()
         {
-            List<Movie> result = new List<Movie>(movies);
-
-            result.Sort((movie1, movie2) => string.Compare(movie1.title, movie2.title, StringComparison.Ordinal));
-
-            return result;
+            return GetMoviesSortedBy((movie1, movie2) => string.Compare(movie1.title, movie2.title, StringComparison.Ordinal));
         }
 
         public IEnumerable<Movie> sort_all_movies_by_date_published_descending()
         {
-            List<Movie> result = new List<Movie>(movies);
-
-            result.Sort((movie1, movie2) => -movie1.date_published.CompareTo(movie2.date_published));
-
-            return result;
+            return GetMoviesSortedBy((movie1, movie2) => -movie1.date_published.CompareTo(movie2.date_published));
         }
 
         public IEnumerable<Movie> sort_all_movies_by_date_published_ascending()
         {
-            List<Movie> result = new List<Movie>(movies);
+            return GetMoviesSortedBy((movie1, movie2) => movie1.date_published.CompareTo(movie2.date_published));
 
-            result.Sort((movie1, movie2) => movie1.date_published.CompareTo(movie2.date_published));
-
-            return result;
         }
 
         public IEnumerable<Movie> sort_all_movies_by_movie_studio_and_year_published()
@@ -170,16 +123,19 @@ namespace TrainingPrep.collections
                 {ProductionStudio.Disney, 6}
             };
             // result.Sort((movie1, movie2) => string.Compare(nameof(movie1.production_studio), nameof(movie2.production_studio), StringComparison.Ordinal));
-            result.Sort((movie1, movie2) => movie1.date_published.Year.CompareTo(movie2.date_published.Year));
-            result.Sort((movie1, movie2) => -productionRating[movie1.production_studio]
-                .CompareTo(productionRating[movie2.production_studio]));
-            
-            foreach (var movie in result)
-            {
-                Debug.WriteLine(nameof(movie.production_studio) + " " + movie.title + " " + movie.date_published.Year);
-                
-            }
-            return result;
+            return GetMoviesSortedBy((movie1, movie2) =>
+                        {
+                            if (productionRating[movie1.production_studio] != productionRating[movie2.production_studio])
+                            {
+                                var comparedRating = -productionRating[movie1.production_studio] + productionRating[movie2.production_studio];
+                                return comparedRating;
+                            }
+                            else
+                                return movie1.date_published.Year - movie2.date_published.Year;
+                        }
+                    )
+            ;
+
         }
     }
 }
