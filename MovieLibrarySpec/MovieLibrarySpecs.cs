@@ -147,8 +147,50 @@ namespace TrainingPrep.specs
 
             results.ShouldContainOnly(cars, a_bugs_life);
         };
+        It should_be_able_to_find_all_movies_published_by_pixar_or_disney = () =>
+        {
+            var results = subject.all_movies_published_by_pixar_or_disney();
 
+            results.ShouldContainOnly(a_bugs_life, pirates_of_the_carribean, cars);
+        };
+
+        It should_be_able_to_find_all_movies_not_published_by_pixar = () =>
+        {
+            var results = subject.all_movies_not_published_by_pixar();
+
+            results.ShouldNotContain(cars, a_bugs_life);
+        };
+
+        It should_be_able_to_find_all_movies_published_after_a_certain_year = () =>
+        {
+            var results = subject.all_movies_published_after(2004);
+
+            results.ShouldContainOnly(the_ring, shrek, theres_something_about_mary);
+        };
+
+        It should_be_able_to_find_all_movies_published_between_a_certain_range_of_years = () =>
+        {
+            var results = subject.all_movies_published_between_years(1982, 2003);
+
+            results.ShouldContainOnly(indiana_jones_and_the_temple_of_doom, a_bugs_life, pirates_of_the_carribean);
+        };
+
+        It should_be_able_to_find_all_kid_movies = () =>
+        {
+            var results = subject.all_kid_movies();
+
+            results.ShouldContainOnly(a_bugs_life, shrek, cars);
+        };
+
+        It should_be_able_to_find_all_action_movies = () =>
+        {
+            var results = subject.all_action_movies();
+
+            results.ShouldContainOnly(indiana_jones_and_the_temple_of_doom, pirates_of_the_carribean);
+        };
     }
+
+    
 
     [Subject(typeof(MovieLibrary))]
     public class when_sorting_movies : concern_for_searching_and_sorting
@@ -161,7 +203,52 @@ namespace TrainingPrep.specs
                 pirates_of_the_carribean, indiana_jones_and_the_temple_of_doom,
                 cars, a_bugs_life);
         };
+        It should_be_able_to_sort_all_movies_by_title_ascending = () =>
+        {
+            var results = subject.sort_all_movies_by_title_ascending();
 
+            results.ShouldContainOnlyInOrder(a_bugs_life, cars, indiana_jones_and_the_temple_of_doom,
+                pirates_of_the_carribean, shrek, the_ring,
+                theres_something_about_mary);
+        };
+
+        It should_be_able_to_sort_all_movies_by_date_published_descending = () =>
+        {
+            var results = subject.sort_all_movies_by_date_published_descending();
+
+            results.ShouldContainOnlyInOrder(theres_something_about_mary, shrek, the_ring, cars,
+                pirates_of_the_carribean, a_bugs_life,
+                indiana_jones_and_the_temple_of_doom);
+        };
+
+        It should_be_able_to_sort_all_movies_by_date_published_ascending = () =>
+        {
+            var results = subject.sort_all_movies_by_date_published_ascending();
+
+            results.ShouldContainOnlyInOrder(indiana_jones_and_the_temple_of_doom, a_bugs_life,
+                pirates_of_the_carribean, cars, the_ring, shrek,
+                theres_something_about_mary);
+        };
+
+        It should_be_able_to_sort_all_movies_by_studio_rating_and_year_published = () =>
+        {
+            //Studio Ratings (highest to lowest)
+            //MGM
+            //Pixar
+            //Dreamworks
+            //Universal
+            //Disney
+            var results = subject.sort_all_movies_by_movie_studio_and_year_published();
+            /* should return a set of results
+     * in the collection sorted by the rating of the production studio (not the movie rating) and year published. for this exercise you need to take the studio ratings
+     * into effect, which means that you first have to sort by movie studio (taking the ranking into account) and then by the
+     * year published. For this test you cannot add any extra properties/fields to either the ProductionStudio or
+     * Movie classes.*/
+
+            results.ShouldContainOnlyInOrder(the_ring, theres_something_about_mary, a_bugs_life, cars, shrek,
+                indiana_jones_and_the_temple_of_doom,
+                pirates_of_the_carribean);
+        };
     }
 
     public abstract class concern_for_searching_and_sorting : movie_library_concern
@@ -244,6 +331,8 @@ namespace TrainingPrep.specs
             movieList.Add(the_ring);
             movieList.Add(theres_something_about_mary);
         }
+
+
     }
 
 }

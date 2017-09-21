@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 
 namespace TrainingPrep.collections
@@ -38,20 +37,13 @@ namespace TrainingPrep.collections
 
         public IEnumerable<Movie> sort_all_movies_by_title_descending()
         {
-            List<Movie> allMovies = all_movies().ToList();
+            List<Movie> result = new List<Movie>(movies);
 
-            allMovies.Sort(new MyComparer());
-            var sortedMovies = allMovies;
+            result.Sort((movie1,movie2)=>-(movie1.title.CompareTo(movie2.title)));
 
-            return new ReadOnlySet<Movie>(sortedMovies);
+            return result;
         }
 
-        public class MyComparer : IComparer<Movie>
-        {
-            public int Compare(Movie x, Movie y)
-            {
-                return -(x.title.CompareTo(y.title));
-            }
-        }
+
     }
 }
