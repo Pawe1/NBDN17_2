@@ -8,7 +8,7 @@ namespace TrainingPrep.collections
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return string.Equals(title, other.title);
+            return String.Equals(title, other.title);
         }
 
         public override bool Equals(object obj)
@@ -40,5 +40,30 @@ namespace TrainingPrep.collections
         public Genre genre { get; set; }
         public int rating { get; set; }
         public DateTime date_published { get; set; }
+
+        public static Predicate<Movie> IsPublishedBy(ProductionStudio productionStudio)
+        {
+            return movie => movie.production_studio.Equals(productionStudio);
+        }
+
+        public static Predicate<Movie> IsNotPublishedBy(ProductionStudio productionStudio)
+        {
+            return movie => !movie.production_studio.Equals(productionStudio);
+        }
+
+        public static Predicate<Movie> IsPublishedAfter(int year)
+        {
+            return movie => movie.date_published.Year > year;
+        }
+
+        public static Predicate<Movie> IsPublishedBetween(int fromYear, int toYear)
+        {
+            return movie => movie.date_published.Year >= fromYear && movie.date_published.Year <= toYear;
+        }
+
+        public static Predicate<Movie> IsOfGenre(Genre genre)
+        {
+            return movie => movie.genre.Equals(genre);
+        }
     }
 }
