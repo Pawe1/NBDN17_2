@@ -28,7 +28,12 @@ namespace TrainingPrep.collections
 
         public IEnumerable<Movie> all_movies_published_by_pixar()
         {
-            return movies.AllThatSatisfy(movie => movie.production_studio.Equals(ProductionStudio.Pixar));
+            return movies.AllThatSatisfy(IsPublishedBy(ProductionStudio.Pixar));
+        }
+
+        private static Predicate<Movie> IsPublishedBy(ProductionStudio productionStudio)
+        {
+            return movie => movie.production_studio.Equals(productionStudio);
         }
 
         public IEnumerable<Movie> sort_all_movies_by_title_descending()
@@ -54,27 +59,47 @@ namespace TrainingPrep.collections
 
         public IEnumerable<Movie> all_movies_not_published_by_pixar()
         {
-            return movies.AllThatSatisfy(movie => !movie.production_studio.Equals(ProductionStudio.Pixar));
+            return movies.AllThatSatisfy(IsNotPublishedBy(ProductionStudio.Pixar));
+        }
+
+        private static Predicate<Movie> IsNotPublishedBy(ProductionStudio productionStudio)
+        {
+            return movie => !movie.production_studio.Equals(productionStudio);
         }
 
         public IEnumerable<Movie> all_movies_published_after(int year)
         {
-            return movies.AllThatSatisfy(movie => movie.date_published.Year > year);
+            return movies.AllThatSatisfy(IsPublishedAfter(year));
+        }
+
+        private static Predicate<Movie> IsPublishedAfter(int year)
+        {
+            return movie => movie.date_published.Year > year;
         }
 
         public IEnumerable<Movie> all_movies_published_between_years(int fromYear, int toYear)
         {
-            return movies.AllThatSatisfy(movie => movie.date_published.Year >= fromYear && movie.date_published.Year <= toYear);
+            return movies.AllThatSatisfy(IsPublishedBetween(fromYear, toYear));
+        }
+
+        private static Predicate<Movie> IsPublishedBetween(int fromYear, int toYear)
+        {
+            return movie => movie.date_published.Year >= fromYear && movie.date_published.Year <= toYear;
         }
 
         public IEnumerable<Movie> all_kid_movies()
         {
-            return movies.AllThatSatisfy(movie => movie.genre.Equals(Genre.kids));
+            return movies.AllThatSatisfy(IsOfGenre(Genre.kids));
+        }
+
+        private static Predicate<Movie> IsOfGenre(Genre genre)
+        {
+            return movie => movie.genre.Equals(genre);
         }
 
         public IEnumerable<Movie> all_action_movies()
         {
-            return movies.AllThatSatisfy(movie => (movie.genre.Equals(Genre.action)));
+            return movies.AllThatSatisfy(IsOfGenre(Genre.action));
                 
         }
 

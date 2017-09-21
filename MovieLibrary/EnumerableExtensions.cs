@@ -12,9 +12,9 @@ static internal class EnumerableExtensions
         }
     }
 
-    public static IEnumerable<TItem> AllThatSatisfy<TItem>(this IEnumerable<TItem> items, Predicate<TItem> condition)
+    public static IEnumerable<TItem> AllThatSatisfy<TItem>(this IEnumerable<TItem> list, Predicate<TItem> condition)
     {
-        foreach (var item in items)
+        foreach (var item in list)
         {
             if (condition(item))
             {
