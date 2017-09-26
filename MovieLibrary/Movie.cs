@@ -43,17 +43,17 @@ namespace TrainingPrep.collections
 
         public static Criteria<Movie> IsPublishedBy(ProductionStudio productionStudio)
         {
-            return new IsPublishedByCriteia(production_studio);
+            return new IsPublishedByCriteia(productionStudio);
         }
 
-        public static Predicate<Movie> IsNotPublishedBy(ProductionStudio productionStudio)
+        public static Criteria<Movie> IsNotPublishedBy(ProductionStudio productionStudio)
         {
-            return movie => !movie.production_studio.Equals(productionStudio);
+            return new Negate(IsPublishedBy(productionStudio));
         }
 
-        public static Predicate<Movie> IsPublishedAfter(int year)
+        public static Criteria<Movie> IsPublishedAfter(int year)
         {
-            return movie => movie.date_published.Year > year;
+            return new IsPublishedAfteterCriteria(year);
         }
 
         public static Predicate<Movie> IsPublishedBetween(int fromYear, int toYear)
@@ -65,5 +65,36 @@ namespace TrainingPrep.collections
         {
             return movie => movie.genre.Equals(genre);
         }
+
+        public class IsPublishedAfteterCriteria : Criteria<Movie>
+        {
+            private readonly int _year;
+
+            public IsPublishedAfteterCriteria(int year)
+            {
+                _year = year;
+            }
+
+            public bool IsSatisfiedBy(Movie item)
+            {
+                return item.date_published.Year > _year;
+            }
+        }
+
+        public class IsPublishedByCriteia : Criteria<Movie>
+        {
+            private readonly ProductionStudio _productionStudio;
+
+            public IsPublishedByCriteia(ProductionStudio productionStudio)
+            {
+                _productionStudio = productionStudio;
+            }
+
+            public bool IsSatisfiedBy(Movie item)
+            {
+                return item.production_studio.Equals(_productionStudio);
+            }
+        }
     }
+
 }
