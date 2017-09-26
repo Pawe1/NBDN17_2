@@ -124,5 +124,15 @@ namespace TrainingPrep.collections
             ;
 
         }
+
+        public IEnumerable<Movie> all_kid_movies_published_after(int year)
+        {
+            return movies.AllThatSatisfy(new Conjunction(Movie.IsOfGenre(Genre.kids), Movie.IsPublishedAfter(year)));
+        }
+
+        public IEnumerable<Movie> all_horror_or_action()
+        {
+            return  movies.AllThatSatisfy(new Alternative(Movie.IsOfGenre(Genre.horror),Movie.IsOfGenre(Genre.action)));
+        }
     }
 }

@@ -188,9 +188,25 @@ namespace TrainingPrep.specs
 
             results.ShouldContainOnly(indiana_jones_and_the_temple_of_doom, pirates_of_the_carribean);
         };
+
+        It should_be_able_to_find_recient_kid_movies = () =>
+        {
+            var results = subject.all_kid_movies_published_after(2003);
+
+            results.ShouldContainOnly(shrek, cars);
+        };
+
+        It should_be_able_to_find_horror_Or_actionmovies = () =>
+        {
+            var results = subject.all_horror_or_action();
+
+            results.ShouldContainOnly(indiana_jones_and_the_temple_of_doom, pirates_of_the_carribean, the_ring);
+        };
+
+
     }
 
-    
+
 
     [Subject(typeof(MovieLibrary))]
     public class when_sorting_movies : concern_for_searching_and_sorting
