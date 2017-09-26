@@ -41,9 +41,9 @@ namespace TrainingPrep.collections
         public int rating { get; set; }
         public DateTime date_published { get; set; }
 
-        public static Predicate<Movie> IsPublishedBy(ProductionStudio productionStudio)
+        public static Criteria<Movie> IsPublishedBy(ProductionStudio productionStudio)
         {
-            return movie => movie.production_studio.Equals(productionStudio);
+            return new IsPublishedByCriteia(production_studio);
         }
 
         public static Predicate<Movie> IsNotPublishedBy(ProductionStudio productionStudio)
