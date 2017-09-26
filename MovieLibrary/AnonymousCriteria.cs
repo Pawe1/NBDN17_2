@@ -9,8 +9,8 @@ public class AnonymousCriteria<TItem> : Criteria<TItem>
         _condition = condition;
     }
 
-    public bool IsSatisfiedBy(TItem item)
+    public bool IsSatisfiedBy(TItem movie)
     {
-        return _condition(item);
+        return _condition(movie);
     }
 }
