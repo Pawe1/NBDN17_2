@@ -39,6 +39,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AnonymousCriteria.cs" />
+    <Compile Include="Criteria.cs" />
     <Compile Include="EnumerableExtensions.cs" />
     <Compile Include="Genre.cs" />
     <Compile Include="Movie.cs" />
