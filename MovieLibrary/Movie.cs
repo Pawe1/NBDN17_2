@@ -1,4 +1,6 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TrainingPrep.collections
 {
@@ -61,9 +63,39 @@ namespace TrainingPrep.collections
             return movie => movie.date_published.Year >= fromYear && movie.date_published.Year <= toYear;
         }
 
-        public static Predicate<Movie> IsOfGenre(Genre genre)
+        public static Criteria<Movie> IsOfGenre(Genre genre)
         {
-            return movie => movie.genre.Equals(genre);
+            return new IsOfGenreCritiria(genre);
+        }
+
+        public class IsPublishedByAnyCriteria : Criteria<Movie>
+        {
+            private readonly List<ProductionStudio> _studios;
+
+            public IsPublishedByAnyCriteria(params ProductionStudio[] studios)
+            {
+                _studios = studios.ToList();
+            }
+
+            public bool IsSatisfiedBy(Movie movie)
+            {
+                return _studios.Contains(movie.production_studio);
+            }
+        }
+    }
+
+    public class IsOfGenreCritiria : Criteria<Movie>
+    {
+        private readonly Genre _genre;
+
+        public IsOfGenreCritiria(Genre genre)
+        {
+            _genre = genre;
+        }
+
+        public bool IsSatisfiedBy(Movie movie)
+        {
+            return movie.genre == _genre;
         }
     }
 
