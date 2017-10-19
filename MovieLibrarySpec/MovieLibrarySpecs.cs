@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
+using Castle.Components.DictionaryAdapter.Xml;
 using TrainingPrep.collections;
 using Machine.Specifications;
 using Machine.Specifications.AutoMocking.Rhino;
@@ -212,13 +213,13 @@ namespace TrainingPrep.specs
 
     public class Where<TItem>
     {
-        public static CriteriaBuilder<TItem,TProperty> hasAn<TProperty>(Func<TItem, TProperty> propertySelector)
+        public static CriteriaBuilder<TItem,TProperty> hasAn<TProperty>(Func<TItem, TProperty> propertySelector) where TProperty:IComparable<TProperty>
         {
             return new CriteriaBuilder<TItem,TProperty>(propertySelector);
         }
     }
 
-    public class CriteriaBuilder<TItem,TProperty>
+    public class CriteriaBuilder<TItem,TProperty> where TProperty: IComparable<TProperty>
     {
         private readonly Func<TItem, TProperty> _propertySelector;
 
@@ -229,7 +230,12 @@ namespace TrainingPrep.specs
 
         public Criteria<TItem> EqualTo(TProperty studio)
         {
-            return new AnonymousCriteria<TItem>(m=>_propertySelector(m).Equals(studio));
+            return new AnonymousCriteria<TItem>(m => _propertySelector(m).Equals(studio));
+        }
+
+        public Criteria<TItem> GreaterThan(TProperty i)
+        {
+            return new AnonymousCriteria<TItem>(m => _propertySelector(m).CompareTo(i)>0);
         }
     }
 
