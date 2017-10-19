@@ -166,7 +166,7 @@ namespace TrainingPrep.specs
 
         private It should_be_able_to_find_all_movies_published_after_a_certain_year = () =>
         {
-            var criteria = Where<Movie>.hasComparable(m => m.date_published.Year).GreaterThan(2004);
+            var criteria = Where<Movie>.hasAn(m => m.date_published.Year).GreaterThan(2004);
             var results = subject.all_movies().AllThatSatisfy(criteria);
 
             results.ShouldContainOnly(the_ring, shrek, theres_something_about_mary);
@@ -217,13 +217,9 @@ namespace TrainingPrep.specs
         {
             return new CriteriaBuilder<TItem,TProperty>(propertySelector);
         }
-        public static ComparableCriteriaBuilder<TItem, TProperty> hasComparable<TProperty>(Func<TItem, TProperty> propertySelector) where TProperty : IComparable<TProperty>
-        {
-            return new ComparableCriteriaBuilder<TItem, TProperty>(propertySelector);
-        }
-    }
+     }
 
-    public class CriteriaBuilder<TItem,TProperty> 
+    public class CriteriaBuilder<TItem, TProperty> 
     {
         private readonly Func<TItem, TProperty> _propertySelector;
 
@@ -237,25 +233,9 @@ namespace TrainingPrep.specs
             return new AnonymousCriteria<TItem>(m => _propertySelector(m).Equals(studio));
         }
 
-    }
-
-    public class ComparableCriteriaBuilder<TItem, TProperty> where TProperty : IComparable<TProperty>
-    {
-        private readonly Func<TItem, TProperty> _propertySelector;
-
-        public ComparableCriteriaBuilder(Func<TItem, TProperty> propertySelector)
+        public Criteria<TItem> GreaterThan(IComparable<TProperty> i)
         {
-            _propertySelector = propertySelector;
-        }
-
-        public Criteria<TItem> EqualTo(TProperty studio)
-        {
-            return new AnonymousCriteria<TItem>(m => _propertySelector(m).Equals(studio));
-        }
-
-        public Criteria<TItem> GreaterThan(TProperty i)
-        {
-            return new AnonymousCriteria<TItem>(m => _propertySelector(m).CompareTo(i) > 0);
+            return new AnonymousCriteria<TItem>(m => i.CompareTo(_propertySelector(m))<0);
         }
     }
 
