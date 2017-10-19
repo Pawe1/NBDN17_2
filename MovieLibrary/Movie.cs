@@ -53,9 +53,24 @@ namespace TrainingPrep.collections
             return new Negate<Movie>(IsPublishedBy(productionStudio));
         }
 
-        public static Predicate<Movie> IsPublishedAfter(int year)
+        public static Criteria<Movie> IsPublishedAfter(int year)
         {
-            return movie => movie.date_published.Year > year;
+            return new IsPublishedAfterCriteria(year); 
+        }
+
+        public class IsPublishedAfterCriteria : Criteria<Movie>
+        {
+            private readonly int _year;
+
+            public IsPublishedAfterCriteria(int year)
+            {
+                _year = year;                
+            }
+
+            public bool IsSatisfiedBy(Movie movie)
+            {
+                return movie.date_published.Year > _year;
+            }
         }
 
         public static Predicate<Movie> IsPublishedBetween(int fromYear, int toYear)
@@ -74,7 +89,7 @@ namespace TrainingPrep.collections
 
             public IsPublishedByAnyCriteria(params ProductionStudio[] studios)
             {
-                _studios = studios.ToList();
+                _studios = new List<ProductionStudio>(studios);
             }
 
             public bool IsSatisfiedBy(Movie movie)
