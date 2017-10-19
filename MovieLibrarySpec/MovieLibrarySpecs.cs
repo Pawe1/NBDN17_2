@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TrainingPrep.collections;
 using Machine.Specifications;
 using Machine.Specifications.AutoMocking.Rhino;
@@ -176,9 +177,10 @@ namespace TrainingPrep.specs
             results.ShouldContainOnly(indiana_jones_and_the_temple_of_doom, a_bugs_life, pirates_of_the_carribean);
         };
 
-        It should_be_able_to_find_all_kid_movies = () =>
+        private It should_be_able_to_find_all_kid_movies = () =>
         {
-            var results = subject.all_kid_movies();
+            var criteria = Where<Movie>.hasAn(m => m.genre).EqualTo(Genre.kids);
+            var results = subject.all_movies().AllThatSatisfy(criteria);
 
             results.ShouldContainOnly(a_bugs_life, shrek, cars);
         };
@@ -207,6 +209,28 @@ namespace TrainingPrep.specs
 
     }
 
+    public class Where<TItem>
+    {
+        public static CriteriaBuilder<TItem,TProperty> hasAn<TProperty>(Func<TItem, TProperty> propertySelector)
+        {
+            return new CriteriaBuilder<TItem,TProperty>(propertySelector);
+        }
+    }
+
+    public class CriteriaBuilder<TItem,TProperty>
+    {
+        private readonly Func<TItem, TProperty> _propertySelector;
+
+        public CriteriaBuilder(Func<TItem, TProperty> propertySelector)
+        {
+            _propertySelector = propertySelector;
+        }
+
+        public Criteria<TItem> EqualTo(TProperty studio)
+        {
+            return new AnonymousCriteria<TItem>(m=>_propertySelector(m).Equals(studio));
+        }
+    }
 
 
     [Subject(typeof(MovieLibrary))]

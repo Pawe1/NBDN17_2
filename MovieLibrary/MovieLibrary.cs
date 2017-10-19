@@ -27,10 +27,7 @@ namespace TrainingPrep.collections
         }
         
 
-        public IEnumerable<Movie> all_movies_published_by_pixar()
-        {
-            return movies.AllThatSatisfy(Movie.IsPublishedBy(ProductionStudio.Pixar));
-        }
+      
 
         public IEnumerable<Movie> sort_all_movies_by_title_descending()
         {
@@ -67,11 +64,7 @@ namespace TrainingPrep.collections
             return movies.AllThatSatisfy(Movie.IsPublishedBetween(fromYear, toYear));
         }
 
-        public IEnumerable<Movie> all_kid_movies()
-        {
-            return movies.AllThatSatisfy(Movie.IsOfGenre(Genre.kids));
-        }
-
+        
         public IEnumerable<Movie> all_action_movies()
         {
             return movies.AllThatSatisfy(Movie.IsOfGenre(Genre.action));
