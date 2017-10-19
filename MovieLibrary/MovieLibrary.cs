@@ -128,51 +128,16 @@ namespace TrainingPrep.collections
 
         public IEnumerable<Movie> all_kid_movies_published_after(int year)
         {
-            return movies.AllThatSatisfy(new Conjunction(Movie.IsOfGenre(Genre.kids), Movie.IsPublishedAfter(year)));
+            return movies.AllThatSatisfy(new Conjunction<Movie>(Movie.IsOfGenre(Genre.kids), Movie.IsPublishedAfter(year)));
         }
 
-        public class Conjunction : Criteria<Movie>
-        {
-            private readonly List<Criteria<Movie>> _criterias;
-
-
-            public Conjunction(params Criteria<Movie>[] criterias)
-            {
-                _criterias = new List<Criteria<Movie>>(criterias);
-            }
-
-            public bool IsSatisfiedBy(Movie movie)
-            {
-                foreach (var criteria in _criterias)
-                {
-                    if (!criteria.IsSatisfiedBy(movie)) return false;
-                }
-                return true;
-            }
-        }
 
         public IEnumerable<Movie> all_horror_or_action()
         {
-            return  movies.AllThatSatisfy(new Alternative(Movie.IsOfGenre(Genre.horror),Movie.IsOfGenre(Genre.action)));
+            return  movies.AllThatSatisfy(new Alternative<Movie>(Movie.IsOfGenre(Genre.horror),Movie.IsOfGenre(Genre.action)));
         }
 
-        public class Alternative : Criteria<Movie>
-        {
-            private readonly List<Criteria<Movie>> _criterias;
+        
 
-            public Alternative(params Criteria<Movie>[] criterias)
-            {
-                _criterias = new List<Criteria<Movie>>(criterias);
-            }
-
-            public bool IsSatisfiedBy(Movie movie)
-            {
-                foreach (var criteria in _criterias)
-                {
-                    if (criteria.IsSatisfiedBy(movie)) return true;
-                }
-                return false;
-            }
-        }
     }
 }
