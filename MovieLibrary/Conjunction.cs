@@ -4,21 +4,18 @@ namespace TrainingPrep.collections
 {
     public class Conjunction<TItem> : Criteria<TItem>
     {
-        private readonly List<Criteria<TItem>> _criterias;
+        private readonly Criteria<TItem> _leftCriteria;
+        private readonly Criteria<TItem> _rightCriteria;
 
-
-        public Conjunction(params Criteria<TItem>[] criterias)
+        public Conjunction(Criteria<TItem> leftCriteria, Criteria<TItem> rightCriteria)
         {
-            _criterias = new List<Criteria<TItem>>(criterias);
+            _leftCriteria = leftCriteria;
+            _rightCriteria = rightCriteria;
         }
 
         public bool IsSatisfiedBy(TItem movie)
         {
-            foreach (var criteria in _criterias)
-            {
-                if (!criteria.IsSatisfiedBy(movie)) return false;
-            }
-            return true;
+            return _leftCriteria.IsSatisfiedBy(movie) && _rightCriteria.IsSatisfiedBy(movie);
         }
     }
 }
