@@ -128,16 +128,13 @@ namespace TrainingPrep.collections
 
         public IEnumerable<Movie> all_kid_movies_published_after(int year)
         {
-            return movies.AllThatSatisfy(new Conjunction<Movie>(Movie.IsOfGenre(Genre.kids), Movie.IsPublishedAfter(year)));
+            return movies.AllThatSatisfy(Movie.IsOfGenre(Genre.kids).And(Movie.IsPublishedAfter(year)));
         }
 
 
         public IEnumerable<Movie> all_horror_or_action()
         {
-            return  movies.AllThatSatisfy(new Alternative<Movie>(Movie.IsOfGenre(Genre.horror),Movie.IsOfGenre(Genre.action)));
+            return  movies.AllThatSatisfy(Movie.IsOfGenre(Genre.horror).Or(Movie.IsOfGenre(Genre.action)));
         }
-
-        
-
     }
 }

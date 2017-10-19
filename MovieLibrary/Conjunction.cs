@@ -2,18 +2,13 @@ using System.Collections.Generic;
 
 namespace TrainingPrep.collections
 {
-    public class Conjunction<TItem> : Criteria<TItem>
+    public class Conjunction<TItem> : BinaryCriteria<TItem>
     {
-        private readonly Criteria<TItem> _leftCriteria;
-        private readonly Criteria<TItem> _rightCriteria;
-
-        public Conjunction(Criteria<TItem> leftCriteria, Criteria<TItem> rightCriteria)
+        public Conjunction(Criteria<TItem> leftCriteria, Criteria<TItem> rightCriteria) : base(leftCriteria, rightCriteria)
         {
-            _leftCriteria = leftCriteria;
-            _rightCriteria = rightCriteria;
         }
 
-        public bool IsSatisfiedBy(TItem movie)
+        public override bool IsSatisfiedBy(TItem movie)
         {
             return _leftCriteria.IsSatisfiedBy(movie) && _rightCriteria.IsSatisfiedBy(movie);
         }

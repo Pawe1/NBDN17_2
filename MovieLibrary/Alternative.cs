@@ -2,22 +2,17 @@ using System.Collections.Generic;
 
 namespace TrainingPrep.collections
 {
-    public class Alternative<TItem> : Criteria<TItem>
+    public class Alternative<TItem> : BinaryCriteria<TItem>
     {
-        private readonly List<Criteria<TItem>> _criterias;
 
-        public Alternative(params Criteria<TItem>[] criterias)
+        public Alternative(Criteria<TItem> leftCriteria, Criteria<TItem> rightCriteria) : base(leftCriteria, rightCriteria)
         {
-            _criterias = new List<Criteria<TItem>>(criterias);
         }
 
-        public bool IsSatisfiedBy(TItem movie)
+
+        public override bool IsSatisfiedBy(TItem movie)
         {
-            foreach (var criteria in _criterias)
-            {
-                if (criteria.IsSatisfiedBy(movie)) return true;
-            }
-            return false;
+            return _leftCriteria.IsSatisfiedBy(movie) || _rightCriteria.IsSatisfiedBy(movie);
         }
     }
 }
