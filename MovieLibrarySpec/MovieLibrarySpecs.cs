@@ -233,7 +233,7 @@ namespace TrainingPrep.specs
             return new AnonymousCriteria<TItem>(m => _propertySelector(m).Equals(studio));
         }
 
-        public Criteria<TItem> GreaterThan(IComparable<TProperty> i)
+        public Criteria<TItem> GreaterThan<TComparableProperty>(TComparableProperty i) where TComparableProperty : IComparable<TProperty>   
         {
             return new AnonymousCriteria<TItem>(m => i.CompareTo(_propertySelector(m))<0);
         }
