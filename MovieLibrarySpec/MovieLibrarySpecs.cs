@@ -163,9 +163,10 @@ namespace TrainingPrep.specs
             results.ShouldNotContain(cars, a_bugs_life);
         };
 
-        It should_be_able_to_find_all_movies_published_after_a_certain_year = () =>
+        private It should_be_able_to_find_all_movies_published_after_a_certain_year = () =>
         {
-            var results = subject.all_movies_published_after(2004);
+            var criteria = Where<Movie>.hasAn(m => m.date_published.Year).GreaterThan(2004);
+            var results = subject.all_movies().AllThatSatisfy(criteria);
 
             results.ShouldContainOnly(the_ring, shrek, theres_something_about_mary);
         };
