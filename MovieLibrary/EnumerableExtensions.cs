@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using TrainingPrep.collections;
 
-static internal class EnumerableExtensions
+public static class EnumerableExtensions
 {
     public static IEnumerable<TItem> OneAtATime<TItem>(this IList<TItem> items)
     {
