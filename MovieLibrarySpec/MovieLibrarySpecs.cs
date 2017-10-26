@@ -161,7 +161,8 @@ namespace TrainingPrep.specs
 
         It should_be_able_to_find_all_movies_not_published_by_pixar = () =>
         {
-            var results = subject.all_movies_not_published_by_pixar();
+            Criteria<Movie> criteria = Where<Movie>.hasAn(m => m.production_studio).Not().EqualToAny(ProductionStudio.Pixar, ProductionStudio.Disney);
+            var results = subject.all_movies().AllThatSatisfy(criteria);
 
             results.ShouldNotContain(cars, a_bugs_life);
         };
