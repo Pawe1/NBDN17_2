@@ -44,8 +44,8 @@
     <Compile Include="DSL\BinaryCriteria.cs" />
     <Compile Include="DSL\Conjunction.cs" />
     <Compile Include="DSL\Criteria.cs" />
-    <Compile Include="DSL\CriteriaBuilder.cs" />
-    <Compile Include="DSL\CriteriaBuilderExtensions.cs" />
+    <Compile Include="DSL\DSLEntryPoint.cs" />
+    <Compile Include="DSL\DslEntryPointExtensions.cs" />
     <Compile Include="DSL\CriteriaExtensions.cs" />
     <Compile Include="Enumerable\EnumerableExtensions.cs" />
     <Compile Include="Genre.cs" />

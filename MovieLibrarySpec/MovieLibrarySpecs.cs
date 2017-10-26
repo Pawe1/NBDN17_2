@@ -13,10 +13,6 @@ using TrainingPrep.DSL;
  * MovieLibrary is an aggregate root for the Movie class. it exposes the ability to search,sort, and iterate over all of the movies that it aggregates.
  */
 
-namespace TrainingPrep.DSL
-{
-}
-
 namespace TrainingPrep.specs
 {
     namespace MovieLibrarySpecs
