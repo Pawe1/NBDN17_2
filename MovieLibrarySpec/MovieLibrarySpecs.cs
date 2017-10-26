@@ -152,6 +152,7 @@ namespace TrainingPrep.specs
         };
         It should_be_able_to_find_all_movies_published_by_pixar_or_disney = () =>
         {
+            Criteria<Movie> criteria = Where<Movie>.hasAn(m => m.production_studio).EqualToAny(ProductionStudio.Pixar,ProductionStudio.Disney);
             var results = subject.all_movies_published_by_pixar_or_disney();
 
             results.ShouldContainOnly(a_bugs_life, pirates_of_the_carribean, cars);
