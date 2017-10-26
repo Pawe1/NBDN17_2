@@ -151,6 +151,13 @@ namespace TrainingPrep.specs
 
             results.ShouldContainOnly(cars, a_bugs_life);
         };
+        private It should_be_that_not_wors_in_natural_way = () =>
+        {
+            Criteria<Movie> criteria = Where<Movie>.hasAn(m => m.production_studio).Not().Not().EqualTo(ProductionStudio.Pixar);
+            var results = subject.all_movies().AllThatSatisfy(criteria);
+
+            results.ShouldContainOnly(cars, a_bugs_life);
+        };
         It should_be_able_to_find_all_movies_published_by_pixar_or_disney = () =>
         {
             Criteria<Movie> criteria = Where<Movie>.hasAn(m => m.production_studio).EqualToAny(ProductionStudio.Pixar,ProductionStudio.Disney);
