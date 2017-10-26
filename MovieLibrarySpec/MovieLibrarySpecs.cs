@@ -174,6 +174,17 @@ namespace TrainingPrep.specs
             results.ShouldNotContain(cars, a_bugs_life);
         };
 
+        private It should_be_able_to_work_predictably = () =>
+        {
+            var negatingPatialBuilder = Where<Movie>.hasAn(m => m.production_studio).Not();
+            var criteria2 = negatingPatialBuilder.Not().EqualTo(ProductionStudio.Disney);
+            Criteria<Movie> criteria = negatingPatialBuilder.EqualTo(ProductionStudio.Pixar);
+
+            var results = subject.all_movies().AllThatSatisfy(criteria);
+
+            results.ShouldNotContain(cars, a_bugs_life);
+        };
+
         private It should_be_able_to_find_all_movies_published_after_a_certain_year = () =>
         {
             var criteria = Where<Movie>.hasAn(m => m.date_published.Year).GreaterThan(2004);

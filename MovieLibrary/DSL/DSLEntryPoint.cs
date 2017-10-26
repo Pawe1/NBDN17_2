@@ -12,10 +12,14 @@ namespace TrainingPrep.DSL
             _propertySelector = propertySelector;
         }
 
+        private DSLEntryPoint(Func<TItem, TProperty> propertySelector, bool isNegation) : this(propertySelector)
+        {
+            this.isNegation = isNegation;
+        }
+
         public DSLEntryPoint<TItem, TProperty> Not()
         {
-            isNegation = !isNegation;
-            return this;
+            return new DSLEntryPoint<TItem, TProperty>(_propertySelector, !isNegation);
         }
     }
 }
