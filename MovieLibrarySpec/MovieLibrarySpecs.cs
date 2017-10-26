@@ -221,21 +221,11 @@ namespace TrainingPrep.specs
 
     public class CriteriaBuilder<TItem, TProperty> 
     {
-        private readonly Func<TItem, TProperty> _propertySelector;
+        public readonly Func<TItem, TProperty> _propertySelector;
 
         public CriteriaBuilder(Func<TItem, TProperty> propertySelector)
         {
             _propertySelector = propertySelector;
-        }
-
-        public Criteria<TItem> EqualTo(TProperty studio)
-        {
-            return new AnonymousCriteria<TItem>(m => _propertySelector(m).Equals(studio));
-        }
-
-        public Criteria<TItem> GreaterThan<TComparableProperty>(TComparableProperty i) where TComparableProperty : IComparable<TProperty>   
-        {
-            return new AnonymousCriteria<TItem>(m => i.CompareTo(_propertySelector(m))<0);
         }
     }
 
