@@ -7,14 +7,14 @@ namespace TrainingPrep.DSL
         public readonly Func<TItem, TProperty> _propertySelector;
         public bool isNegation = false;
 
-        public DSLEntryPoint(Func<TItem, TProperty> propertySelector)
+        public DSLEntryPoint(Func<TItem, TProperty> propertySelector) : this(propertySelector,false)
         {
-            _propertySelector = propertySelector;
         }
 
-        private DSLEntryPoint(Func<TItem, TProperty> propertySelector, bool isNegation) : this(propertySelector)
+        private DSLEntryPoint(Func<TItem, TProperty> propertySelector, bool isNegation) 
         {
             this.isNegation = isNegation;
+            this._propertySelector = propertySelector;
         }
 
         public DSLEntryPoint<TItem, TProperty> Not()
