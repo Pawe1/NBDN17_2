@@ -7,7 +7,11 @@ namespace TrainingPrep.DSL
     {
         public static Criteria<TItem> EqualTo<TItem, TProperty>(this DSLEntryPoint<TItem, TProperty> dslEntryPoint, TProperty studio)
         {
-            return new AnonymousCriteria<TItem>(m => dslEntryPoint._propertySelector(m).Equals(studio));
+            return dslEntryPoint.isNegation
+                ? new AnonymousCriteria<TItem>(m => !dslEntryPoint._propertySelector(m).Equals(studio))
+                : new AnonymousCriteria<TItem>(m => dslEntryPoint._propertySelector(m).Equals(studio));
+
+
         }
 
         public static Criteria<TItem> GreaterThan<TItem, TProperty>(this DSLEntryPoint<TItem, TProperty> dslEntryPoint, TProperty i) where TProperty : IComparable<TProperty>
