@@ -39,20 +39,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Alternative.cs" />
-    <Compile Include="AnonymousCriteria.cs" />
-    <Compile Include="BinaryCriteria.cs" />
-    <Compile Include="Conjunction.cs" />
-    <Compile Include="Criteria.cs" />
-    <Compile Include="CriteriaExtensions.cs" />
-    <Compile Include="EnumerableExtensions.cs" />
+    <Compile Include="DSL\Alternative.cs" />
+    <Compile Include="DSL\AnonymousCriteria.cs" />
+    <Compile Include="DSL\BinaryCriteria.cs" />
+    <Compile Include="DSL\Conjunction.cs" />
+    <Compile Include="DSL\Criteria.cs" />
+    <Compile Include="DSL\CriteriaBuilder.cs" />
+    <Compile Include="DSL\CriteriaBuilderExtensions.cs" />
+    <Compile Include="DSL\CriteriaExtensions.cs" />
+    <Compile Include="Enumerable\EnumerableExtensions.cs" />
     <Compile Include="Genre.cs" />
     <Compile Include="Movie.cs" />
     <Compile Include="MovieLibrary.cs" />
     <Compile Include="ProductionStudio.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ReadOnlySet.cs" />
+    <Compile Include="Enumerable\ReadOnlySet.cs" />
+    <Compile Include="DSL\Where.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

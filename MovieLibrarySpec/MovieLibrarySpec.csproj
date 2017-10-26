@@ -62,9 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AssertionExtensions.cs" />
-    <Compile Include="CBE.cs" />
     <Compile Include="CollectionExtensions.cs" />
-    <Compile Include="CriteriaBuilderExtensions.cs" />
     <Compile Include="MovieLibrarySpecs.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
