@@ -14,7 +14,7 @@ namespace TrainingPrep.DSL
 
         public DSLEntryPoint<TItem, TProperty> Not()
         {
-            isNegation = true;
+            isNegation = !isNegation;
             return this;
         }
     }
