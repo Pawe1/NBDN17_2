@@ -8,8 +8,8 @@ public static class CriteriaBuilderExtensions
         return new AnonymousCriteria<TItem>(m => criteriaBuilder._propertySelector(m).Equals(studio));
     }
 
-    public static Criteria<TItem> GreaterThan<TComparableProperty, TItem, TProperty>(this CriteriaBuilder<TItem, TProperty> criteriaBuilder, TComparableProperty i) where TComparableProperty : IComparable<TProperty>   
+    public static Criteria<TItem> GreaterThan<TItem, TProperty>(this CriteriaBuilder<TItem, TProperty> criteriaBuilder, TProperty i) where TProperty : IComparable<TProperty>   
     {
-        return new AnonymousCriteria<TItem>(m => i.CompareTo(criteriaBuilder._propertySelector(m))<0);
+        return new AnonymousCriteria<TItem>(m => criteriaBuilder._propertySelector(m).CompareTo(i) >0);
     }
 }
