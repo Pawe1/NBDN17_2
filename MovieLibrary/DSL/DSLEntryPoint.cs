@@ -7,9 +7,9 @@ namespace TrainingPrep.DSL
     {
         public readonly Func<TItem, TProperty> _propertySelector;
         public bool isNegation;
-        private Criteria<TItem> _criteria;
+        private Criteria<TItem> _previousCriteria;
 
-        public DSLEntryPoint(Func<TItem, TProperty> propertySelector, Criteria<TItem> criteria) : this(propertySelector,false, criteria)
+        public DSLEntryPoint(Func<TItem, TProperty> propertySelector, Criteria<TItem> previousCriteria) : this(propertySelector,false, previousCriteria)
         {
         }
 
@@ -17,11 +17,11 @@ namespace TrainingPrep.DSL
         {
         }
 
-        private DSLEntryPoint(Func<TItem, TProperty> propertySelector, bool isNegation, Criteria<TItem> criteria = null) 
+        private DSLEntryPoint(Func<TItem, TProperty> propertySelector, bool isNegation, Criteria<TItem> previousCriteria = null) 
         {
             this.isNegation = isNegation;
             this._propertySelector = propertySelector;
-            _criteria = criteria;
+            _previousCriteria = previousCriteria;
         }
 
         public DSLEntryPoint<TItem, TProperty> Not()
@@ -32,14 +32,15 @@ namespace TrainingPrep.DSL
 
         public Criteria<TItem> ApplyModifications(Criteria<TItem> resultCriteria)
         {
-            if (_criteria != null)
-            {
-                resultCriteria = new Conjunction<TItem>(resultCriteria, _criteria);
-
-            }
             if (isNegation)
                 resultCriteria = new Negate<TItem>(resultCriteria);
 
+            if (_previousCriteria != null)
+            {
+                resultCriteria = new Conjunction<TItem>(resultCriteria, _previousCriteria);
+
+            }
+            
             return resultCriteria;
         }
     }
