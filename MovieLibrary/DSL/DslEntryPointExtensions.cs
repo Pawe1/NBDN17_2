@@ -13,9 +13,9 @@ namespace TrainingPrep.DSL
             return dslEntryPoint.ApplyModifications(resultCriteria);
         }
 
-        public static Criteria<TItem> GreaterThan<TItem, TProperty>(this DSLEntryPoint<TItem, TProperty> dslEntryPoint, TProperty i) where TProperty : IComparable<TProperty>
+        public static Criteria<TItem> GreaterThan<TItem, TProperty>(this DSLEntryPoint<TItem, TProperty> dslEntryPoint, TProperty value) where TProperty : IComparable<TProperty>
         {
-            var resultCriteria = new AnonymousCriteria<TItem>(m => dslEntryPoint._propertySelector(m).CompareTo(i) >0);
+            var resultCriteria = new PropertyCriteria<TItem, TProperty>(dslEntryPoint._propertySelector, new GreaterCriteria<TProperty>(value)); 
             return dslEntryPoint.ApplyModifications(resultCriteria);
         }
 
@@ -27,12 +27,27 @@ namespace TrainingPrep.DSL
         }
     }
 
+    public class GreaterCriteria<TItem> : Criteria<TItem> where TItem : IComparable<TItem>
+    {
+        private readonly TItem _value;
+
+        public GreaterCriteria(TItem value)
+        {
+            _value = value;
+        }
+
+        public bool IsSatisfiedBy(TItem movie)
+        {
+            return movie.CompareTo(_value) > 0;
+        }
+    }
+
     public class PropertyCriteria<TItem, TPropoerty>:Criteria<TItem>
     {
         private readonly Func<TItem, TPropoerty> _propertySelector;
-        private readonly EqualCriteria<TPropoerty> _innerCriteria;
+        private readonly Criteria<TPropoerty> _innerCriteria;
 
-        public PropertyCriteria(Func<TItem, TPropoerty> propertySelector, EqualCriteria<TPropoerty> innerCriteria)
+        public PropertyCriteria(Func<TItem, TPropoerty> propertySelector, Criteria<TPropoerty> innerCriteria)
         {
             _propertySelector = propertySelector;
             _innerCriteria = innerCriteria;
