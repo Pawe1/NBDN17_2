@@ -6,9 +6,9 @@ namespace TrainingPrep.DSL
 {
     public static class DslEntryPointExtensions
     {
-        public static Criteria<TItem> EqualTo<TItem, TProperty>(this DSLEntryPoint<TItem, TProperty> dslEntryPoint, TProperty studio)
+        public static Criteria<TItem> EqualTo<TItem, TProperty>(this DSLEntryPoint<TItem, TProperty> dslEntryPoint, TProperty value)
         {
-            var resultCriteria = new AnonymousCriteria<TItem>(m => dslEntryPoint._propertySelector(m).Equals(studio));
+            var resultCriteria = new PropertyCriteria<TItem,TProperty>(dslEntryPoint._propertySelector, new EqualCriteria<TProperty>(value));
 
             return dslEntryPoint.ApplyModifications(resultCriteria);
         }
