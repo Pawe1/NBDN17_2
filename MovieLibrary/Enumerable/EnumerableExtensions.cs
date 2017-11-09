@@ -12,11 +12,11 @@ public static class EnumerableExtensions
         }
     }
 
-    public static IEnumerable<TItem> AllThatSatisfy<TItem>(this IEnumerable<TItem> list, Predicate<TItem> condition)
+    public static IEnumerable<TItem> ThatSatisfy<TItem>(this IEnumerable<TItem> list, Predicate<TItem> condition)
     {
-        return AllThatSatisfy(list, new AnonymousCriteria<TItem>(condition));
+        return ThatSatisfy(list, new AnonymousCriteria<TItem>(condition));
     }
-    public static IEnumerable<TItem> AllThatSatisfy<TItem>(this IEnumerable<TItem> list, Criteria<TItem> criteria)
+    public static IEnumerable<TItem> ThatSatisfy<TItem>(this IEnumerable<TItem> list, Criteria<TItem> criteria)
     {
         foreach (var item in list)
         {

@@ -46,28 +46,28 @@ namespace TrainingPrep.collections
 
         public IEnumerable<Movie> all_movies_published_by_pixar_or_disney()
         {            
-            return movies.AllThatSatisfy(new Movie.IsPublishedByAnyCriteria(ProductionStudio.Pixar, ProductionStudio.Disney));
+            return movies.ThatSatisfy(new Movie.IsPublishedByAnyCriteria(ProductionStudio.Pixar, ProductionStudio.Disney));
         }
 
         public IEnumerable<Movie> all_movies_not_published_by_pixar()
         {
-            return movies.AllThatSatisfy(Movie.IsNotPublishedBy(ProductionStudio.Pixar));
+            return movies.ThatSatisfy(Movie.IsNotPublishedBy(ProductionStudio.Pixar));
         }
 
         public IEnumerable<Movie> all_movies_published_after(int year)
         {
-            return movies.AllThatSatisfy(Movie.IsPublishedAfter(year));
+            return movies.ThatSatisfy(Movie.IsPublishedAfter(year));
         }
 
         public IEnumerable<Movie> all_movies_published_between_years(int fromYear, int toYear)
         {
-            return movies.AllThatSatisfy(Movie.IsPublishedBetween(fromYear, toYear));
+            return movies.ThatSatisfy(Movie.IsPublishedBetween(fromYear, toYear));
         }
 
         
         public IEnumerable<Movie> all_action_movies()
         {
-            return movies.AllThatSatisfy(Movie.IsOfGenre(Genre.action));
+            return movies.ThatSatisfy(Movie.IsOfGenre(Genre.action));
         }
 
         public IEnumerable<Movie> sort_all_movies_by_title_ascending()
@@ -121,13 +121,13 @@ namespace TrainingPrep.collections
 
         public IEnumerable<Movie> all_kid_movies_published_after(int year)
         {
-            return movies.AllThatSatisfy(Movie.IsOfGenre(Genre.kids).And(Movie.IsPublishedAfter(year)));
+            return movies.ThatSatisfy(Movie.IsOfGenre(Genre.kids).And(Movie.IsPublishedAfter(year)));
         }
 
 
         public IEnumerable<Movie> all_horror_or_action()
         {
-            return  movies.AllThatSatisfy(Movie.IsOfGenre(Genre.horror).Or(Movie.IsOfGenre(Genre.action)));
+            return  movies.ThatSatisfy(Movie.IsOfGenre(Genre.horror).Or(Movie.IsOfGenre(Genre.action)));
         }
     }
 }

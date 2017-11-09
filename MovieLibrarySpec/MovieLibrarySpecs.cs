@@ -147,21 +147,21 @@ namespace TrainingPrep.specs
         private It should_be_able_to_find_all_movies_published_by_pixar = () =>
         {
             Criteria<Movie> criteria = Where<Movie>.hasAn(m => m.production_studio).EqualTo(ProductionStudio.Pixar);
-            var results = subject.all_movies().AllThatSatisfy(criteria);
+            var results = subject.all_movies().ThatSatisfy(criteria);
 
             results.ShouldContainOnly(cars, a_bugs_life);
         };
         private It should_be_that_not_wors_in_natural_way = () =>
         {
             Criteria<Movie> criteria = Where<Movie>.hasAn(m => m.production_studio).Not().Not().EqualTo(ProductionStudio.Pixar);
-            var results = subject.all_movies().AllThatSatisfy(criteria);
+            var results = subject.all_movies().ThatSatisfy(criteria);
 
             results.ShouldContainOnly(cars, a_bugs_life);
         };
         It should_be_able_to_find_all_movies_published_by_pixar_or_disney = () =>
         {
             Criteria<Movie> criteria = Where<Movie>.hasAn(m => m.production_studio).EqualToAny(ProductionStudio.Pixar,ProductionStudio.Disney);
-            var results = subject.all_movies().AllThatSatisfy(criteria);
+            var results = subject.all_movies().ThatSatisfy(criteria);
 
             results.ShouldContainOnly(a_bugs_life, pirates_of_the_carribean, cars);
         };
@@ -169,7 +169,7 @@ namespace TrainingPrep.specs
         It should_be_able_to_find_all_movies_not_published_by_pixar = () =>
         {
             Criteria<Movie> criteria = Where<Movie>.hasAn(m => m.production_studio).Not().EqualTo(ProductionStudio.Pixar);
-            var results = subject.all_movies().AllThatSatisfy(criteria);
+            var results = subject.all_movies().ThatSatisfy(criteria);
 
             results.ShouldNotContain(cars, a_bugs_life);
         };
@@ -180,7 +180,7 @@ namespace TrainingPrep.specs
             var criteria2 = negatingPatialBuilder.Not().EqualTo(ProductionStudio.Disney);
             Criteria<Movie> criteria = negatingPatialBuilder.EqualTo(ProductionStudio.Pixar);
 
-            var results = subject.all_movies().AllThatSatisfy(criteria);
+            var results = subject.all_movies().ThatSatisfy(criteria);
 
             results.ShouldNotContain(cars, a_bugs_life);
         };
@@ -188,7 +188,7 @@ namespace TrainingPrep.specs
         private It should_be_able_to_find_all_movies_published_after_a_certain_year = () =>
         {
             var criteria = Where<Movie>.hasAn(m => m.date_published.Year).GreaterThan(2004);
-            var results = subject.all_movies().AllThatSatisfy(criteria);
+            var results = subject.all_movies().ThatSatisfy(criteria);
 
             results.ShouldContainOnly(the_ring, shrek, theres_something_about_mary);
         };
@@ -203,7 +203,7 @@ namespace TrainingPrep.specs
         private It should_be_able_to_find_all_kid_movies = () =>
         {
             var criteria = Where<Movie>.hasAn(m => m.genre).EqualTo(Genre.kids);
-            var results = subject.all_movies().AllThatSatisfy(criteria);
+            var results = subject.all_movies().ThatSatisfy(criteria);
 
             results.ShouldContainOnly(a_bugs_life, shrek, cars);
         };
@@ -215,9 +215,12 @@ namespace TrainingPrep.specs
             results.ShouldContainOnly(indiana_jones_and_the_temple_of_doom, pirates_of_the_carribean);
         };
 
-        It should_be_able_to_find_recient_kid_movies = () =>
+        private It should_be_able_to_find_recient_kid_movies = () =>
         {
-            var results = subject.all_kid_movies_published_after(2003);
+            var criteria = Where<Movie>.hasAn(m => m.date_published.Year).GreaterThan(2003)
+                                        .And()
+                                        .hasAn(m => m.genre).EqualTo(Genre.kids);
+            var results = subject.all_movies().ThatSatisfy(criteria);
 
             results.ShouldContainOnly(shrek, cars);
         };
