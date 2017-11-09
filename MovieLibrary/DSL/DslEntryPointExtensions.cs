@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using TrainingPrep.collections;
 
 namespace TrainingPrep.DSL
 {
@@ -7,22 +8,22 @@ namespace TrainingPrep.DSL
     {
         public static Criteria<TItem> EqualTo<TItem, TProperty>(this DSLEntryPoint<TItem, TProperty> dslEntryPoint, TProperty studio)
         {
-            return dslEntryPoint.isNegation
-                ? new AnonymousCriteria<TItem>(m => !dslEntryPoint._propertySelector(m).Equals(studio))
-                : new AnonymousCriteria<TItem>(m => dslEntryPoint._propertySelector(m).Equals(studio));
+            var resultCriteria = new AnonymousCriteria<TItem>(m => dslEntryPoint._propertySelector(m).Equals(studio));
 
-
+            return dslEntryPoint.ApplyNegation(resultCriteria);
         }
 
         public static Criteria<TItem> GreaterThan<TItem, TProperty>(this DSLEntryPoint<TItem, TProperty> dslEntryPoint, TProperty i) where TProperty : IComparable<TProperty>
         {
-            return new AnonymousCriteria<TItem>(m => dslEntryPoint._propertySelector(m).CompareTo(i) >0);
+            var resultCriteria = new AnonymousCriteria<TItem>(m => dslEntryPoint._propertySelector(m).CompareTo(i) >0);
+            return dslEntryPoint.ApplyNegation(resultCriteria);
         }
 
         public static Criteria<TItem> EqualToAny<TItem, TProperty>(this DSLEntryPoint<TItem, TProperty> dslEntryPoint, params TProperty[] allowedValues)
         {
             var values = new List<TProperty>(allowedValues);
-            return new AnonymousCriteria<TItem> ( i => values.Contains(dslEntryPoint._propertySelector(i)));
+            var resultCriteria = new AnonymousCriteria<TItem> ( i => values.Contains(dslEntryPoint._propertySelector(i)));
+            return dslEntryPoint.ApplyNegation(resultCriteria);
         }
     }
 }
