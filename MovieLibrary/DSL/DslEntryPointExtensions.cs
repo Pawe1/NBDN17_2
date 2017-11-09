@@ -26,4 +26,36 @@ namespace TrainingPrep.DSL
             return dslEntryPoint.ApplyModifications(resultCriteria);
         }
     }
+
+    public class PropertyCriteria<TItem, TPropoerty>:Criteria<TItem>
+    {
+        private readonly Func<TItem, TPropoerty> _propertySelector;
+        private readonly EqualCriteria<TPropoerty> _innerCriteria;
+
+        public PropertyCriteria(Func<TItem, TPropoerty> propertySelector, EqualCriteria<TPropoerty> innerCriteria)
+        {
+            _propertySelector = propertySelector;
+            _innerCriteria = innerCriteria;
+        }
+
+        public bool IsSatisfiedBy(TItem item)
+        {
+            return _innerCriteria.IsSatisfiedBy(_propertySelector(item));
+        }
+    }
+
+    public class EqualCriteria<TItem> : Criteria<TItem>
+    {
+        private readonly TItem _value;
+
+        public EqualCriteria(TItem value)
+        {
+            _value = value;
+        }
+
+        public bool IsSatisfiedBy(TItem currentValue)
+        {
+            return _value.Equals(currentValue);
+        }
+    }
 }
